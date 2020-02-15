@@ -1,12 +1,32 @@
 import React, {Component} from 'react'
-import Person from './Person/Person'
+import Person  from './Person/Person'
 
 class Persons extends Component {
-    static getDrivedStateFromProps(props, state){
-        console.log()
+    static getDerivedStateFromProps(props, state) {
+        console.log('persons getDerivedStateFromProps', props);
+        return state
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log('persons should update', nextContext);
+        return nextProps.persons !== this.props.persons
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        console.log('persons snapshot', prevState);
+        return {message: 'snap'}
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('persons did update', snapshot)
+    }
+
+    componentWillUnmount() {
+        console.log('Persons will be unmounted')
     }
 
     render() {
+        console.log('persons rendering');
         return (this.props.persons.map((person, index) => {
                 return (
                     <Person

@@ -17,16 +17,26 @@ class App extends Component {
             {id: 'asdf11', name: 'Lis', age: 26}
         ],
         otherState: 'some other value',
-        showPersons: false
+        showPersons: false,
+        showCockPit: true
     };
 
     static getDerivedStateFromProps(props, state) {
-        console.log('getDerivedStateFromProps', props);
+        // console.log('getDerivedStateFromProps', props);
         return state
     }
 
     componentDidMount() {
         console.log('Mounted');
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        console.log('App should update');
+        return true
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log('App updated')
     }
 
     nameChangedHandler = (event, id) => {
@@ -56,6 +66,11 @@ class App extends Component {
         this.setState({showPersons: !doesShow});
     };
 
+    toggleCockPitHandler = () => {
+        const doesShow = this.state.showCockPit;
+        this.setState({showCockPit: !doesShow});
+    };
+
     render() {
         console.log('Render');
         let persons = null;
@@ -69,11 +84,18 @@ class App extends Component {
 
         return (
             <div className={classes.App}>
-                <Cockpit
-                    title={this.props.title}
-                    showPersons={this.state.showPersons}
-                    persons={this.state.persons}
-                    clicked={this.togglePersonsHandler}/>
+
+                <button onClick={this.toggleCockPitHandler}>Remove Cockpit</button>
+
+                {this.state.showCockPit ?
+                    <Cockpit
+                        title={this.props.title}
+                        showPersons={this.state.showPersons}
+                        personsLength={this.state.persons.length}
+                        clicked={this.togglePersonsHandler}/>
+                    : null
+                }
+
                 {persons}
             </div>
         );
